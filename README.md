@@ -102,7 +102,36 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 ```
 
 ### 1.2) Install
+
+Com a infraestrutura pronta podemos iniciar os trabalhos. Vamos instalar o servidor **Chef Server**, faça download da ultima versão do pacote nesse Link.
+
+* [Download Chef Server](https://www.chef.io/downloads/tools/infra-server)
+
+Na escrita dessa doc a versão usada foi a ***chef-server-core_15.1.7-1_amd64.deb***
+
+```bash
+dpkg -i chef-server-core_15.1.7-1_amd64.deb
+```
+
 ### 1.3) Configure
+
+Os comandos abaixo pode demorar um pouco....
+
+```bash
+chef-server-ctl reconfigure
+chef-server-ctl status
+chef-server-ctl service-list
+chef-server-ctl install chef-manage
+chef-server-ctl reconfigure
+chef-manage-ctl reconfigure
+chef-manage-ctl reconfigure --accept-license
+chef-server-ctl upgrade
+chef-server-ctl backup
+```
+
+```bash
+ls /var/opt/chef-backup
+```
 
 ## 2) Chef WorkStation
 ### 2.1) Install
