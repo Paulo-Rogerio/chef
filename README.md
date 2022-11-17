@@ -27,9 +27,13 @@ Como dito no bloco anterior vamos usar VirtualBox para emular o cenário.
 | Vbox | Ubuntu 20.04 | Chef Node - Nginx
 | Vbox | Ubuntu 20.04 | Chef Node - PostgreSQL
 
-Cada **Vm** possui 2 inerfaçe de Rede, sendo uma para comunicação interna **( Máquina Host com Máquina Virtual)** e outra interface para saída de internet. O lance é que ao adicionar uma máquina Node, ele usa a interface **NAT** como meio de comunicação entre os Hosts, e isso não é bom para nossos testes pois essa interface não consegue interagir com as outras máquinas.
+Cada **Vm** possui 2 inerfaçe de Rede, sendo uma para comunicação interna **( Máquina Host com Máquina Virtual)** e outra interface para saída de internet. O lance é que ao adicionar uma máquina ***( Node para ser gerenciada pela Chef)***, ele usa a interface **NAT** como meio de comunicação entre os Hosts, e isso não é bom para nossos testes pois essa interface não consegue interagir com as outras máquinas.
 
-Para resolver esse problema cada máquina conterá 2 interfaces sendo ( 1 **NAT** e outra **Internal** ), outra característica é que a máquina **Chef Server** funcionará como gateway de internet para as demais máquinas.
+Para resolver esse problema cada máquina conterá 2 interfaces sendo:
+ - **NAT** ( Dedicada para acesso Externo )
+ - **Internal** ( Dedicada para acesso Interno)
+
+Outra característica é que a máquina **Chef Server** funcionará como gateway de internet para as demais máquinas, possam ser catalogadas no **Chef-Server** usando o IP da **Rede Interna**.
 
 | Vm | Finalidade | Rede NAT | Rede Internal
 | --- | --- | --- | --- |
