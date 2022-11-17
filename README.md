@@ -42,9 +42,61 @@ Outra característica é que a máquina **Chef Server** funcionará como gateway
 | Vbox | Chef Node - Nginx | 10.2.0.15 | 192.168.56.30
 | Vbox | Chef Node - PostgreSQL | 10.2.0.15 | 192.168.56.40
 
-#### Como adequar as Vms?
+#### Como adequar a rede das Vms?
 
+Criar um script para rotear internet para os Hosts ( Vms ).
 
+```bash
+mkdir -p /opt/devops/firewall && touch mkdir -p /opt/devops/firewall/firewall.sh
+echo "echo 1 > /proc/sys/net/ipv4/ip_forward" > /opt/devops/firewall/firewall.sh
+echo "iptables -A POSTROUTING -t nat -o enp0s3 -j MASQUERADE" >> /opt/devops/firewall/firewall.sh
+```
+
+Colocar o script para ser iniciado no boot do Sistema Operacional ( crontab ).
+
+```bash
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+@reboot /opt/devops/firewall/firewall.sh
+```
+
+#### E nas estações de trabalho ( Nodes )?
+
+Basta apontar o gateway padrão para a máquina que está funcionando como router.
+
+```bash
+vi /etc/netplan/00-installer-config.yaml
+```
+
+```yml
+network:
+  ethernets:
+    enp0s3:
+      dhcp4: true
+      dhcp4-overrides:
+       use-routes: false
+    enp0s8:
+      dhcp4: false
+      addresses: [192.168.56.30/24]
+      nameservers:
+        addresses: [4.2.2.2]
+      routes:
+      - to: 0.0.0.0/0
+        via: 192.168.56.10
+  version: 2
+```
+
+```bash
+route -vn
+```
+
+```bash
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.56.10   0.0.0.0         UG    0      0        0 enp0s8
+10.0.2.0        0.0.0.0         255.255.255.0   U     0      0        0 enp0s3
+192.168.56.0    0.0.0.0         255.255.255.0   U     0      0        0 enp0s8
+```
 
 ### 1.2) Install
 ### 1.3) Configure
