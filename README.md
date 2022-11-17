@@ -47,7 +47,10 @@ Outra característica é que a máquina **Chef Server** funcionará como gateway
 Criar um script para rotear internet para os Hosts ( Vms ).
 
 ```bash
-mkdir -p /opt/devops/firewall && touch mkdir -p /opt/devops/firewall/firewall.sh
+mkdir -p /opt/devops/firewall && \
+touch /opt/devops/firewall/firewall.sh && \
+chmod +x /opt/devops/firewall/firewall.sh
+
 echo "echo 1 > /proc/sys/net/ipv4/ip_forward" > /opt/devops/firewall/firewall.sh
 echo "iptables -A POSTROUTING -t nat -o enp0s3 -j MASQUERADE" >> /opt/devops/firewall/firewall.sh
 ```
