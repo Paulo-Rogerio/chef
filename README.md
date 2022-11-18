@@ -236,7 +236,6 @@ knife client list (Erro SSL)
 
 ```bash
 knife ssl fetch
-knife user list
 ```
 
 #### List Users...
