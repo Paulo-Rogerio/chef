@@ -126,11 +126,27 @@ chef-server-ctl reconfigure
 chef-manage-ctl reconfigure
 chef-manage-ctl reconfigure --accept-license
 chef-server-ctl upgrade
-chef-server-ctl backup
 ```
 
+#### Backup
+
 ```bash
+chef-server-ctl backup
 ls /var/opt/chef-backup
+```
+
+#### Reiniciando Aplicação
+
+```bash
+chef-server-ctl restart
+echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+echo "never" > /sys/kernel/mm/transparent_hugepage/enabled
+```
+
+#### Logs
+
+```bash
+chef-server-ctl tail
 ```
 
 ## 2) Chef WorkStation
