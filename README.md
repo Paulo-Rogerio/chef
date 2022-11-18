@@ -172,7 +172,77 @@ chef-server-ctl org-create development "Development" --association_user paulo -f
 Agora vamos configurar o ambiente de desenvolvimento, é aqui que o **Desenvolvedor** irá trabalhar.
 
 ### 2.1) Install
+
+Vamos instalar o servidor **Chef Workstation**, faça download da ultima versão do pacote nesse Link.
+
+* [Download Chef WorkStation](https://www.chef.io/downloads/tools/workstation)
+
+Na escrita dessa doc a versão usada foi a ***chef-workstation_22.10.1013-1_amd64.deb***
+
+```bash
+dpkg -i chef-workstation_22.10.1013-1_amd64.deb
+echo 'eval "$(chef shell-init bash)"' >> ~/.bashrc
+chef -v
+ruby -v
+knife -v
+which ruby
+```
+
 ### 2.2) Configure
+
+Navegue no servidor na seguinte estrutura, e faça o dowload do knife.rb. Esse arquivo contém os parâmetros necessários para submeter os uploads dos cookbooks.
+
+<img src="docs/img/chef-workstation/01-workstation.jpg"  width=100% height=60%>
+
+#### Knife
+
+```bash
+touch .chef/knife.rb
+```
+
+```bash
+current_dir = File.dirname(__FILE__)
+log_level                :info
+log_location             STDOUT
+node_name                "paulo"
+client_key               "#{current_dir}/paulo.pem"
+chef_server_url          "https://template-ubuntu-2004/organizations/development"
+cookbook_path            ["~/projetos/chef-repo/cookbooks"]
+```
+
+#### Private Key
+Nesse etapa você deverá copiar sua chave privada criada no **Chef Server**.
+
+```bash
+chmod 400 paulo.pem
+```
+
+#### Diretório onde ficará seus Projetos
+
+```bash
+mkdir -p ~/projetos
+```
+
+#### Testando comunicação com o Server
+
+Ao executar o comando abaixo, você receberá um erro, pois o certificado não é valido, então é necessário baixar o certificado auto assinado gerado pelo **Chef** para que ele possa confiar.
+
+```bash
+knife client list (Erro SSL)
+```
+
+#### Download Certificados...
+
+```bash
+knife ssl fetch
+knife user list
+```
+
+#### List Users...
+
+```bash
+knife user list
+```
 
 ## 3) Chef Node
 ### 3.1) Install
