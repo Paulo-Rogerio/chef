@@ -9,8 +9,9 @@
   - [2.2) Configure](#22-configure)
 - [3) Chef Node](#2-chef-node)
   - [3.1) Install](#31-install)
-  - [3.2) Aplicando Receitas](#32-aplicando-receitas)
-- [4) Install and Configure PostgreSQL](#4-Install-and-configure-postgresql)
+- [4) Meu Primeiro CookBook](#4-meu-primeiro-cookbook)
+- [5) Install and Configure PostgreSQL](#5-Install-and-configure-postgresql)
+
 
 ## 1) Chef Server
 
@@ -246,6 +247,6 @@ knife user list
 
 ## 3) Chef Node
 ### 3.1) Install
-### 3.2) Aplicando Receitas
 
-## 4) Install and Configure PostgreSQL
+## 4) Meu Primeiro CookBook
+## 5) Install and Configure PostgreSQL
