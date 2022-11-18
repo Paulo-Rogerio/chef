@@ -138,9 +138,9 @@ ls /var/opt/chef-backup
 #### Reiniciando Aplicação
 
 ```bash
-chef-server-ctl restart
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 echo "never" > /sys/kernel/mm/transparent_hugepage/enabled
+chef-server-ctl restart
 ```
 
 #### Logs
