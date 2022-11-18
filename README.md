@@ -149,7 +149,28 @@ chef-server-ctl restart
 chef-server-ctl tail
 ```
 
+#### Criando Usuário
+
+Cada usuário com acesso a plataforma deverá ter uma chave, e por meio dessa que o desenvolvedor submete os cookbooks para dentro do server.
+
+```bash
+mkdir -p /root/.keys-chef
+chef-server-ctl user-create paulo "Paulo Rogerio" "Chef Manager" email@gmail.com 123456 -f /root/.keys-chef/paulo.pem
+```
+
+#### Criando Organização
+
+Essas organizações precisam ser vinculadas a algum usuário administrador. Observe que cada organização contém sua chave.
+
+```bash
+chef-server-ctl org-create production "Production" --association_user paulo -f /root/.keys-chef/production.pem
+chef-server-ctl org-create development "Development" --association_user paulo -f /root/.keys-chef/development.pem
+```
+
 ## 2) Chef WorkStation
+
+Agora vamos configurar o ambiente de desenvolvimento, é aqui que o **Desenvolvedor** irá trabalhar.
+
 ### 2.1) Install
 ### 2.2) Configure
 
