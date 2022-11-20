@@ -245,7 +245,36 @@ knife user list
 ```
 
 ## 3) Chef Node
+
+Agora é hora de subir os agentes nas estações remotamente. O comando abaixo deve ser executado na maquina **WorkStation**
+
 ### 3.1) Install
 
+knife bootstrap 192.168.56.30 --ssh-user root --ssh-password 123456 --node-name node01
+
+
 ## 4) Meu Primeiro CookBook
+
+chef generate cookbook cookbooks/create-user
+cd cookbooks/create-user
+ls recipes/
+chef generate recipe user
+ll
+ls recipes/
+vi recipes/user.rb 
+cookstyle -a recipes/user.rb
+vi recipes/user.rb 
+cookstyle -a recipes/user.rb
+vi recipes/user.rb 
+cookstyle -a recipes/user.rb
+vi recipes/default.rb
+knife cookbook upload create-user
+cd ..
+knife cookbook list
+knife cookbook test create-user
+knife node run_list add nginx recipe[create-user::user]
+knife node run_list add nginx recipe[create-user]
+ssh root@192.168.56.30 chef-client --runlist "recipe["create-user"]"
+
+
 ## 5) Install and Configure PostgreSQL
