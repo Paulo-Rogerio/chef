@@ -255,6 +255,7 @@ knife bootstrap 192.168.56.30 --ssh-user root --ssh-password 123456 --node-name 
 
 ## 4) Meu Primeiro CookBook
 
+```bash
 chef generate cookbook cookbooks/create-user
 cd cookbooks/create-user
 ls recipes/
@@ -275,6 +276,6 @@ knife cookbook test create-user
 knife node run_list add nginx recipe[create-user::user]
 knife node run_list add nginx recipe[create-user]
 ssh root@192.168.56.30 chef-client --runlist "recipe["create-user"]"
-
+```
 
 ## 5) Install and Configure PostgreSQL
