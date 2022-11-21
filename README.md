@@ -14,11 +14,9 @@
 
 
 ## 1) Chef Server
-
 Nesse tutorial iremos aprender a utilizar essa poderosa ferramenta **Chef** para provisionamento de recursos dentro de uma máquina. O chef é baseado em Ruby, então todos os seus manifestos tem a extensão **.rb**. Nesse tutorial vamos criar todo o cenário usando VirtualBox.
 
 ### 1.1) Vms
-
 Como dito no bloco anterior vamos usar VirtualBox para emular o cenário.
 
 | Vm | S.O | Finalidade
@@ -44,7 +42,6 @@ Outra característica é que a máquina **Chef Server** funcionará como gateway
 | Vbox | Chef Node - PostgreSQL | 10.2.0.15 | 192.168.56.40
 
 #### Como adequar a rede das Vms?
-
 Criar um script para rotear internet para os Hosts ( Vms ).
 
 ```bash
@@ -65,7 +62,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/us
 ```
 
 #### E nas estações de trabalho ( Nodes )?
-
 Basta apontar o gateway padrão para a máquina que está funcionando como router.
 
 ```bash
@@ -103,7 +99,6 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 ```
 
 ### 1.2) Install
-
 Com a infraestrutura pronta podemos iniciar os trabalhos. Vamos instalar o servidor **Chef Server**, faça download da ultima versão do pacote nesse Link.
 
 * [Download Chef Server](https://www.chef.io/downloads/tools/infra-server)
@@ -115,7 +110,6 @@ dpkg -i chef-server-core_15.1.7-1_amd64.deb
 ```
 
 ### 1.3) Configure
-
 Os comandos abaixo pode demorar um pouco....
 
 ```bash
@@ -130,14 +124,12 @@ chef-server-ctl upgrade
 ```
 
 #### Backup
-
 ```bash
 chef-server-ctl backup
 ls /var/opt/chef-backup
 ```
 
 #### Reiniciando Aplicação
-
 ```bash
 echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
 echo "never" > /sys/kernel/mm/transparent_hugepage/enabled
@@ -145,13 +137,11 @@ chef-server-ctl restart
 ```
 
 #### Logs
-
 ```bash
 chef-server-ctl tail
 ```
 
 #### Criando Usuário
-
 Cada usuário com acesso a plataforma deverá ter uma chave, e por meio dessa que o desenvolvedor submete os cookbooks para dentro do server.
 
 ```bash
@@ -160,7 +150,6 @@ chef-server-ctl user-create paulo "Paulo Rogerio" "Chef Manager" email@gmail.com
 ```
 
 #### Criando Organização
-
 Essas organizações precisam ser vinculadas a algum usuário administrador. Observe que cada organização contém sua chave.
 
 ```bash
@@ -169,11 +158,9 @@ chef-server-ctl org-create development "Development" --association_user paulo -f
 ```
 
 ## 2) Chef WorkStation
-
 Agora vamos configurar o ambiente de desenvolvimento, é aqui que o **Desenvolvedor** irá trabalhar.
 
 ### 2.1) Install
-
 Vamos instalar o servidor **Chef Workstation**, faça download da ultima versão do pacote nesse Link.
 
 * [Download Chef WorkStation](https://www.chef.io/downloads/tools/workstation)
@@ -190,13 +177,11 @@ which ruby
 ```
 
 ### 2.2) Configure
-
 Navegue no servidor na seguinte estrutura, e faça o dowload do knife.rb. Esse arquivo contém os parâmetros necessários para submeter os uploads dos cookbooks.
 
 <img src="docs/img/chef-workstation/01-workstation.jpg"  width=100% height=60%>
 
 #### Knife
-
 ```bash
 touch .chef/knife.rb
 ```
@@ -219,13 +204,11 @@ chmod 400 paulo.pem
 ```
 
 #### Diretório onde ficará seus Projetos
-
 ```bash
 mkdir -p ~/projetos
 ```
 
 #### Testando comunicação com o Server
-
 Ao executar o comando abaixo, você receberá um erro, pois o certificado não é valido, então é necessário baixar o certificado auto assinado gerado pelo **Chef** para que ele possa confiar.
 
 ```bash
@@ -233,19 +216,17 @@ knife client list (Erro SSL)
 ```
 
 #### Download Certificados...
-
 ```bash
 knife ssl fetch
 ```
 
 #### List Users...
-
 ```bash
 knife user list
 ```
 
 ## 3) Chef Node
-Agora é hora de subir os agentes nas estações remotamente. O comando abaixo deve ser executado na maquina **WorkStation**
+Agora é hora de subir os agentes nas estações remotamente. O comando abaixo deve ser executado na maquina **WorkStation**.s
 
 ### 3.1) Install
 O comando abaixo deve ser executado a partir da máquina workstation.
