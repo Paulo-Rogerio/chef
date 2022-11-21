@@ -245,16 +245,19 @@ knife user list
 ```
 
 ## 3) Chef Node
-
 Agora é hora de subir os agentes nas estações remotamente. O comando abaixo deve ser executado na maquina **WorkStation**
 
 ### 3.1) Install
+O comando abaixo deve ser executado a partir da máquina workstation.
+ssh-user: Nome do usuário
+ssh-password: Senha do usuário. Aqui tem um ponto de observação que é a utilização de chaves
+públicas autorizadas no servidor de destino ( Authorized keys ) que também podem ser utilizadas.
+node-name: é o rótulo, como vc deseja vizualizar o host.
 
-knife bootstrap 192.168.56.30 --ssh-user root --ssh-password 123456 --node-name node01
-
-
+```bash
+knife bootstrap 192.168.56.30 --ssh-user root --ssh-password 123456 --node-name nginx
+```
 ## 4) Meu Primeiro CookBook
-
 ```bash
 chef generate cookbook cookbooks/create-user
 cd cookbooks/create-user
