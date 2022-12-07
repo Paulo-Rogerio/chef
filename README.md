@@ -192,7 +192,7 @@ log_level                :info
 log_location             STDOUT
 node_name                "paulo"
 client_key               "#{current_dir}/paulo.pem"
-chef_server_url          "https://template-ubuntu-2004/organizations/development"
+chef_server_url          "https://chef/organizations/estudos"
 cookbook_path            ["~/projetos/chef-repo/cookbooks"]
 ```
 
@@ -226,7 +226,7 @@ knife user list
 ```
 
 ## 3) Chef Node
-Agora é hora de subir os agentes nas estações remotamente. O comando abaixo deve ser executado na maquina **WorkStation**.s
+Agora é hora de subir os agentes nas estações remotamente. O comando abaixo deve ser executado na maquina **WorkStation**.
 
 ### 3.1) Install
 O comando abaixo deve ser executado a partir da máquina workstation.
@@ -240,23 +240,93 @@ knife bootstrap 192.168.56.30 --ssh-user root --ssh-password 123456 --node-name 
 ```
 ## 4) Meu Primeiro CookBook
 ```bash
-chef generate cookbook cookbooks/create-user
-cd cookbooks/create-user
+chef generate cookbook cookbooks/base
+```
+
+```bash
+cd cookbooks/base
 ls recipes/
-chef generate recipe user
-ll
+default.rb 
+cat default.rb
+```
+
+```bash
+#
+# Cookbook:: base
+# Recipe:: default
+#
+# Copyright:: 2022, The Authors, All Rights Reserved.
+```
+
+```bash
+chef generate recipe timezone
+```
+
+### Definindo Timezone
+
+```bash
+touch recipes/timezone.rb
 ls recipes/
-vi recipes/user.rb 
-cookstyle -a recipes/user.rb
-vi recipes/user.rb 
-cookstyle -a recipes/user.rb
-vi recipes/user.rb 
-cookstyle -a recipes/user.rb
-vi recipes/default.rb
-knife cookbook upload create-user
+default.rb  timezone.rb
+```
+
+```bash
+vi recipes/timezone.rb 
+```
+
+```ruby
+link "/etc/localtime" do
+  to "/usr/share/zoneinfo/America/Sao_Paulo"
+  not_if "readlink /etc/localtime | egrep -q '^Sao_Paulo$'"
+end
+```
+
+### Includes
+
+```bash
+vi recipes/default.rb 
+```
+
+```ruby
+include_recipe 'base::timezone'
+```
+
+### Rspec
+
+```bash
+cookstyle -a recipes/default.rb
+Inspecting 1 file
+.
+
+1 file inspected, no offenses detected
+```
+
+```bash
+cookstyle -a recipes/timezone.rb
+Inspecting 1 file
+.
+
+1 file inspected, no offenses detected
+```
+
+### Testando CookBook
+
+```ruby
+chef-client --local-mode --why-run --runlist "recipe[base]"
+```
+
+### Testando Receitas de forma isolada
+
+```ruby
+chef-client --local-mode --why-run --runlist "recipe[base::timezone]"
+```
+
 cd ..
+knife cookbook upload base
 knife cookbook list
-knife cookbook test create-user
+
+chef-client --local-mode --why-run --runlist "recipe[base::timezone]"
+
 knife node run_list add nginx recipe[create-user::user]
 knife node run_list add nginx recipe[create-user]
 ssh root@192.168.56.30 chef-client --runlist "recipe["create-user"]"
