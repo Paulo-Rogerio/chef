@@ -239,7 +239,10 @@ node-name: é o rótulo, como vc deseja vizualizar o host.
 knife bootstrap 192.168.56.30 --ssh-user root --ssh-password 123456 --node-name nginx
 ```
 ## 4) Meu Primeiro CookBook
+
 ```bash
+mkdir -p ~/projetos/chef-repo/cookbooks
+cd ~/projetos/chef-repo
 chef generate cookbook cookbooks/base
 ```
 
